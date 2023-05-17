@@ -25,6 +25,9 @@ def _color_tree(g):
                     break
 
 def karmarkar_karp(numbers : Instance, return_indices=False) -> Partition:
+    if len(numbers) < 2:
+        raise ValueError("PARTITION instance must contain at least 2 numbers")
+
     g = nx.Graph()
     for idx, number in enumerate(numbers):
         node = _Node(idx, number)

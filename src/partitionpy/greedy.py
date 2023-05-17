@@ -1,6 +1,9 @@
 from .types import Instance, Partition
 
 def naive_greedy(numbers: Instance, return_indices=False) -> Partition:
+    if len(numbers) < 2:
+        raise ValueError("PARTITION instance must contain at least 2 numbers")
+
     numbers = sorted(numbers, reverse=True)
 
     list_a = []
