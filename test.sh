@@ -1,2 +1,2 @@
 pip install -e .
-python -m unittest discover tests
+python -m pytest
