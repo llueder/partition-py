@@ -1,6 +1,6 @@
 import pytest
 from common import cmp_partition
-import partitionpy
+from src import partitionpy
 
 def test_too_few_numbers():
     with pytest.raises(ValueError):
