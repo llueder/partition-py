@@ -1,32 +1,47 @@
 """
 Karmarkar-Karp algorithm
 """
+from typing import List
 import heapq
-import networkx as nx
 
 from .types import Instance, Partition
 
 class _Node:
-    # pylint: disable=too-few-public-methods
+    # pylint: disable=missing-function-docstring
     def __init__(self, idx, number) -> None:
         self.idx = idx
         self.number = number
         self.value = self.number
         self.color = None
+        self.children = []  # type: List[_Node]
+        self.parent = None
 
     def __lt__(self, other) -> bool:
         return self.value > other.value  # yes, its reversed, to have a reversed heap
 
-def _color_tree(tree):
-    start_node = list(tree.nodes)[0]
-    start_node.color = 0
+    def add_child(self, child) -> None:
+        self.children.append(child)
+        assert child.parent is None  # just to catch errors should they ocurr
+        child.parent = self
 
-    for node in nx.dfs_preorder_nodes(tree, source=start_node):
-        if node.color is None:
-            for neighbor in tree.neighbors(node):
-                if neighbor.color is not None:
-                    node.color = 1 - neighbor.color
-                    break
+def _color_tree(tree):
+    root = None
+    for node in tree:
+        if node.parent is None:
+            if root is not None:
+                assert False
+            root = node
+            # we could break here; but continue to trigger the assertion in case of errors
+
+    color = 0
+    level = [root]
+    while len(level) > 0:
+        next_level = []
+        for node in level:
+            node.color = color
+            next_level.extend(node.children)
+        level = next_level
+        color = 1 - color
 
 def karmarkar_karp(numbers : Instance, return_indices=False) -> Partition:
     """
@@ -57,12 +72,12 @@ def karmarkar_karp(numbers : Instance, return_indices=False) -> Partition:
     if len(numbers) < 2:
         raise ValueError("PARTITION instance must contain at least 2 numbers")
 
-    tree = nx.Graph()
+    tree = []
     for idx, number in enumerate(numbers):
         node = _Node(idx, number)
-        tree.add_node(node)
+        tree.append(node)
 
-    active_nodes_sorted = list(tree.nodes)
+    active_nodes_sorted = list(tree)
     heapq.heapify(active_nodes_sorted)
 
     while len(active_nodes_sorted) > 1:
@@ -70,10 +85,10 @@ def karmarkar_karp(numbers : Instance, return_indices=False) -> Partition:
         smaller = heapq.heappop(active_nodes_sorted)
         larger.value = larger.value - smaller.value
         heapq.heappush(active_nodes_sorted, larger)
-        tree.add_edge(larger, smaller)
+        larger.add_child(smaller)
 
     _color_tree(tree)
-    list_a = [node.idx if return_indices else node.number for node in tree.nodes if node.color==0]
-    list_b = [node.idx if return_indices else node.number for node in tree.nodes if node.color==1]
+    list_a = [node.idx if return_indices else node.number for node in tree if node.color==0]
+    list_b = [node.idx if return_indices else node.number for node in tree if node.color==1]
 
     return (list_a, list_b)
