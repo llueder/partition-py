@@ -1,9 +1,10 @@
 """
 Simplest naive greedy algorithm.
 """
+from typing import List
 from .types import Instance, Partition
 
-def naive_greedy(numbers: Instance, return_indices: bool=False) -> Partition:
+def naive_greedy(numbers_unsorted: Instance, return_indices: bool=False) -> Partition:
     """
     Probably the simplest greedy algorithm for partitioning.
 
@@ -14,14 +15,14 @@ def naive_greedy(numbers: Instance, return_indices: bool=False) -> Partition:
     :param: return_indices can be set to true when the algorithm shall return the indices to build
             the partition instead of the partition itself
     """
-    if len(numbers) < 2:
+    if len(numbers_unsorted) < 2:
         raise ValueError("PARTITION instance must contain at least 2 numbers")
 
     numbers, indices = zip(*sorted(
-            zip(numbers, range(len(numbers))), reverse=True))
+            zip(numbers_unsorted, range(len(numbers_unsorted))), reverse=True))
 
-    list_a = []
-    list_b = []
+    list_a = []  # type: List[int]
+    list_b = []  # type: List[int]
     sum_a = 0
     sum_b = 0
 
