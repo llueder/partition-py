@@ -1,6 +1,19 @@
+"""
+Simplest naive greedy algorithm.
+"""
 from .types import Instance, Partition
 
-def naive_greedy(numbers: Instance, return_indices=False) -> Partition:
+def naive_greedy(numbers: Instance, return_indices: bool=False) -> Partition:
+    """
+    Probably the simplest greedy algorithm for partitioning.
+
+    Runtime complexity in O(n) and generally fast.
+    Yields discrepancy in O(1/n) on average.
+
+    :param: numbers is a list of integers.
+    :param: return_indices can be set to true when the algorithm shall return the indices to build
+            the partition instead of the partition itself
+    """
     if len(numbers) < 2:
         raise ValueError("PARTITION instance must contain at least 2 numbers")
 

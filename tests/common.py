@@ -1,4 +1,11 @@
+"""
+Common test helpers
+"""
+
 def cmp_partition(expected, actual):
+    """
+    Compares two partitions for equivalence.
+    """
     exp_a, exp_b = expected
     act_a, act_b = actual
 
