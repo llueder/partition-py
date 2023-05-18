@@ -1,3 +1,9 @@
+"""
+Tests for the naive greedy algorithm.
+"""
+
+# pylint: disable=missing-function-docstring, import-error
+
 import pytest
 from common import cmp_partition
 from src import partitionpy
