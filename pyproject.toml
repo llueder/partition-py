@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "partitionpy"
-version = "0.0.1"
+version = "1.0.0"
 authors = [
   { name="Lasse Lüder", email="lasse.lueder@tuhh.de" },
 ]
