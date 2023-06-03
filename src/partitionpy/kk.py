@@ -28,8 +28,7 @@ def _color_tree(tree):
     root = None
     for node in tree:
         if node.parent is None:
-            if root is not None:
-                assert False
+            assert root is None
             root = node
             # we could break here; but continue to trigger the assertion in case of errors
 

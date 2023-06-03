@@ -19,6 +19,10 @@ def test_numbers():
     actual = partitionpy.complete_karmarkar_karp([4,5,6,7,8])
     cmp_partition(expected, actual)
 
+    expected = ([78], [6, 45, 8])
+    actual = partitionpy.complete_karmarkar_karp([6,45,78,8])
+    cmp_partition(expected, actual)
+
 def test_indices_sorted():
     # kk does not sort internally, still check that the indices are still correct
     expected =([0, 1], [2, 3, 4])
